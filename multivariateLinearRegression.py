@@ -25,6 +25,12 @@ def useDataFile():
 
 #Convert the raw data to a matrix
 def convertToMatrix(data):
+    n = len(data)-1
+    m = len(data[0])
+    matrix = np.empty([m,n])
+    for i in xrange(data):
+        for j in xrange(data[0])
+            matrix[i][j]=data[j][i]
     return matrix
 
 #Plot the dataset and the function in two dimensions
