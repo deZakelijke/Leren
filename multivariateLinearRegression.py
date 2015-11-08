@@ -25,25 +25,13 @@ def useDataFile():
 
 #Convert the raw data to a matrix
 def convertToMatrix(data):
-    n = len(data)-1
+    n = len(data)
     m = len(data[0])
     matrix = np.empty([m,n])
     for i in xrange(n):
         for j in xrange(m):
             matrix[j][i]=data[i][j]
     return matrix
-
-#Plot the dataset and the function in two dimensions
-def plotData(data, dataType, theta0, theta1):
-    plt.plot(data[dataType],data[0],'bo')
-    plotPoints = [[]] 
-    plotPoints.append([])
-    plotPoints[0].append(0)
-    plotPoints[0].append(max(data[dataType]))
-    plotPoints[1].append(hypothesis(theta0, theta1, 0))
-    plotPoints[1].append(hypothesis(theta0, theta1, max(data[dataType])))  
-    plt.plot(plotPoints[0],plotPoints[1], 'b-')
-    plt.show()
 
 #Calculathe the hypothesis 
 def hypothesis(theta, x):
@@ -75,14 +63,25 @@ def updateTheta(iterations, alpha, theta, x, y):
         theta = tempTheta
     return theta
 
-def multiple(iterations, alpha, theta):
+#Execute the regression
+def multiple(iterations, alpha, theta, data):
+    y = np.array(data[4])    
+    del data[4]
+
+    squared = raw_input('Add squared values to the data?(yes/No)')
+    if str.lower(squared) == 'yes':
+        alpha = 0.0000000000000001
+        print 'Adding squared values.'
+        for i in xrange(len(data)-1):
+            theta = np.append(theta, 10.0)
+            data.append([])
+            for j in xrange(len(data[0])):
+                data[i+4].append(data[i+1][j]**2)                
 
     print 'number of iterations is set to: ', iterations
     print 'alpha value is set to: ', alpha
 
-    data = useDataFile()
-    y = np.array(data[4])
-    dataMatrix = convertToMatrix(data[0:5])
+    dataMatrix = convertToMatrix(data)
 
     oldCost = cost(theta, dataMatrix, y)
     print 'Old cost is: ', oldCost
@@ -97,8 +96,8 @@ def multiple(iterations, alpha, theta):
 
     print 'Cost improvement is: ', oldCost - newCost
 
-
-iterations = 10000
+#Main
+iterations = 1000
 alpha = 0.000000000001
 theta = np.array([0.0, 1.0, 1.0, 10.0])
 
@@ -107,4 +106,6 @@ if len(sys.argv)>1:
 
 if len(sys.argv)>2:
     alpha = float(sys.argv[2])
-multiple(iterations, alpha, theta)
+
+data = useDataFile()
+multiple(iterations, alpha, theta, data)
