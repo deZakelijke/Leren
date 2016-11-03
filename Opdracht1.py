@@ -62,8 +62,9 @@ def gradientVector(theta, xVector, yVector, thetaIndex):
 def getInputArgs():
     defaultI = 10
     defaultA = 0.0001
-    if len(sys.argv) == 1:
+    if len(sys.argv) == 0:
         print 'No arguments given. Default to iterations=10 and alpha=0.01'
+        print 'oi'
         return defaultI, defaultA
     if len(sys.argv) == 2:
         if not (isinstance(sys.argv[2], int) or isinstance(sys.argv[2], long)):
@@ -74,6 +75,8 @@ def getInputArgs():
         return sys.argv[2], defaultA
     if len(sys.argv) > 2:
         if not (isinstance(sys.argv[2], int) or isinstance(sys.argv[2], long)):
+            print sys.argv[2]
+            print isinstance(sys.argv[2], int)
             print 'Not a valid #iterations argument. Default to iterations=10 and alpha=0.01'
             return defaultI, defaultA
         if not isinstance(sys.argv[3], float):
